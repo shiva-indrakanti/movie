@@ -1,31 +1,18 @@
-package com.app.moviebooking.entity;
+package com.app.moviebooking.dto;
 
-import jakarta.persistence.*;
+import com.app.moviebooking.entity.Theater;
 import lombok.Data;
 
 import java.time.LocalDate;
 import java.util.List;
 
-@Entity
 @Data
-public class Movie {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
+public class NewMovieRequest {
     private String title;
-
     private String genre;
-
     private String description;
-
     private String language;
-
     private Integer duration;
-
     private LocalDate releaseDate;
-
-    @OneToMany(mappedBy = "movie")
-    private List<Theater> theaters;
+    private List<Long> theaterIds;
 }
