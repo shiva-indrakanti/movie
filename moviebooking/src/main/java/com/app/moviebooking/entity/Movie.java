@@ -26,6 +26,11 @@ public class Movie {
 
     private LocalDate releaseDate;
 
-    @OneToMany(mappedBy = "movie")
+    @ManyToMany(mappedBy = "movie")
+    @JoinTable(
+            name = "movie_theater",
+            joinColumns = @JoinColumn(name = "movie_id"),
+            inverseJoinColumns = @JoinColumn(name = "theater_id")
+    )
     private List<Theater> theaters;
 }

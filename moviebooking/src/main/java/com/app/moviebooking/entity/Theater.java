@@ -3,6 +3,8 @@ package com.app.moviebooking.entity;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.util.List;
+
 @Entity
 @Data
 public class Theater {
@@ -14,11 +16,10 @@ public class Theater {
 
     private String location;
 
-    private int capacity;
+    private int seatCapacity;
 
     private String screenType;
 
-    @ManyToOne
-    @JoinColumn(name = "movie_id")
-    private Movie movie;
+    @ManyToMany(mappedBy = "theaters")
+    private List<Movie> movies;
 }
