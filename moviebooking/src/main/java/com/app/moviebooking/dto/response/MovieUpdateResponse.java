@@ -7,7 +7,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 @Data
-public class MovieResponse {
+public class MovieUpdateResponse {
     private String title;
     private String genre;
     private String description;

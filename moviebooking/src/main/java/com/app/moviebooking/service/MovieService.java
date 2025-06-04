@@ -1,16 +1,16 @@
 package com.app.moviebooking.service;
 
 import com.app.moviebooking.dto.NewMovieRequest;
-import com.app.moviebooking.dto.response.MovieResponse;
+import com.app.moviebooking.dto.response.MovieDetailsResponse;
+import com.app.moviebooking.dto.response.MovieUpdateResponse;
 import com.app.moviebooking.entity.Movie;
 import com.app.moviebooking.entity.Theater;
+import com.app.moviebooking.exception.MovieNotFoundException;
 import com.app.moviebooking.exception.TheaterNotFoundException;
 import com.app.moviebooking.mapper.MovieMapper;
 import com.app.moviebooking.repo.MovieRepo;
 import com.app.moviebooking.repo.TheaterRepo;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatusCode;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
@@ -50,9 +50,9 @@ public class MovieService {
         return "Movie has been added successfully";
     }
 
-    public MovieResponse updateMovie(Long movieId,NewMovieRequest request) {
+    public MovieUpdateResponse updateMovie(Long movieId, NewMovieRequest request) {
         Movie movie = movieRepo.findById(movieId)
-                .orElseThrow(() -> new TheaterNotFoundException(movieId ,"Movie not found with ID "));
+                .orElseThrow(() -> new MovieNotFoundException(movieId ,"Movie not found with ID "));
 
         movie.setTitle(request.getTitle());
         movie.setGenre(request.getGenre());
@@ -80,14 +80,24 @@ public class MovieService {
     public String removeMovie(Long movieId) {
 
         Movie movie = movieRepo.findById(movieId)
-                .orElseThrow(() -> new TheaterNotFoundException(movieId ,"Movie not found with ID "));
+                .orElseThrow(() -> new MovieNotFoundException(movieId ,"Movie not found with ID "));
 
         for (Theater theater : movie.getTheaters()) {
             theater.getMovies().remove(movie);
         }
-        
+
         movie.setTheaters(Collections.emptyList());
         movieRepo.delete(movie);
         return "Successfully deleted a movie";
+    }
+
+    public MovieDetailsResponse retrieveMovie(String title){
+        Movie movie = movieRepo.findByTitle(title).orElseThrow(() -> new MovieNotFoundException("Movie Not found","title"));
+
+        if(movie.getTheaters().isEmpty()){
+            throw new TheaterNotFoundException("No Theaters found for particular movie ="+title);
+        }
+
+        return MovieMapper.mapEntityToDetailsResponse(movie);
     }
 }

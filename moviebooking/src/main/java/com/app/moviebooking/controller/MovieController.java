@@ -1,7 +1,8 @@
 package com.app.moviebooking.controller;
 
 import com.app.moviebooking.dto.NewMovieRequest;
-import com.app.moviebooking.dto.response.MovieResponse;
+import com.app.moviebooking.dto.response.MovieDetailsResponse;
+import com.app.moviebooking.dto.response.MovieUpdateResponse;
 import com.app.moviebooking.service.MovieService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -21,7 +22,7 @@ public class MovieController {
     }
 
     @PostMapping("/update-movie/{movieId}")
-    public ResponseEntity<MovieResponse> updateMovie(@PathVariable(name = "movieId") Long movieId , @RequestBody NewMovieRequest request){
+    public ResponseEntity<MovieUpdateResponse> updateMovie(@PathVariable(name = "movieId") Long movieId , @RequestBody NewMovieRequest request){
         return new ResponseEntity<>(movieService.updateMovie(movieId,request), HttpStatus.OK);
     }
 
@@ -29,4 +30,10 @@ public class MovieController {
     public ResponseEntity<String> deleteMovie(@PathVariable(name = "movieId") Long movieId){
         return new ResponseEntity<>(movieService.removeMovie(movieId),HttpStatus.OK);
     }
+
+    @GetMapping("/movie/{title}")
+    public ResponseEntity<MovieDetailsResponse> getMovie(@PathVariable(name = "title") String title){
+        return new ResponseEntity<>(movieService.retrieveMovie(title), HttpStatus.OK);
+    }
+    
 }

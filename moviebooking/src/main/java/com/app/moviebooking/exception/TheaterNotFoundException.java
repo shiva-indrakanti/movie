@@ -5,7 +5,6 @@ import java.util.List;
 public class TheaterNotFoundException extends RuntimeException{
     private  List<Long> theaterIds;
     private  String errorMessage;
-    private  Long theaterId;
 
     public TheaterNotFoundException(List<Long> theaterIds, String message) {
         super(message);
@@ -13,10 +12,8 @@ public class TheaterNotFoundException extends RuntimeException{
         this.errorMessage = message;
     }
 
-    public TheaterNotFoundException(Long id, String message) {
-        super(message);
+    public TheaterNotFoundException(String message) {
         this.errorMessage = message;
-        this.theaterId = id;
     }
 
     public List<Long> getTheaterIds() {
@@ -27,7 +24,4 @@ public class TheaterNotFoundException extends RuntimeException{
         return errorMessage;
     }
 
-    public Long getTheaterId() {
-        return theaterId;
-    }
 }
